@@ -1,0 +1,28 @@
+select group_type.grp_typ_descr,time.time_quarter, count(*) as Total_Bookings, sum(amount_paid),
+round(100*sum(amount_paid)/(select sum(amount_paid) from resort_dw.group_bookings),1)as percentage_rev
+from resort_dw.group_bookings
+ inner join resort_dw.group on resort_dw.group.grp_id=resort_dw.group_bookings.grp_id
+ inner join resort_dw.group_type on resort_dw.group.grp_typ_id=resort_dw.group_type.grp_typ_id
+ inner join resort_dw.time on resort_dw.time.time_id=resort_dw.group_bookings.time_id
+where time.time_year=2018
+group by
+cube ( group_type.grp_typ_descr, time.time_quarter)
+order by group_type.grp_typ_descr,time.time_quarter;
+
+Select resort_dw.guest_room.room_descr,count(*) as booking_count, 
+round(avg(amount_paid)) as average_bill_amount
+from resort_dw.guest_bookings
+inner join resort_dw.guest_room on resort_dw.guest_room.room_id=resort_dw.guest_bookings.room_id
+group by rollup (resort_dw.guest_room.room_descr)
+order by 1
+
+select group_type.grp_typ_descr,time.time_quarter, count(*) as Total_Bookings, sum(amount_paid),
+round(100*sum(amount_paid)/(select sum(amount_paid) from resort_dw.group_bookings),1)as percentage_rev
+from resort_dw.group_bookings
+ inner join resort_dw.group on resort_dw.group.grp_id=resort_dw.group_bookings.grp_id
+ inner join resort_dw.group_type on resort_dw.group.grp_typ_id=resort_dw.group_type.grp_typ_id
+ inner join resort_dw.time on resort_dw.time.time_id=resort_dw.group_bookings.time_id
+where time.time_year=2018
+group by
+cube ( group_type.grp_typ_descr, time.time_quarter)
+order by group_type.grp_typ_descr,time.time_quarter;
